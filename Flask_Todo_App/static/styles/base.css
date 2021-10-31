@@ -1,0 +1,17 @@
+#mainHead {
+    background: black;
+    color: white;
+    margin: 0;
+}
+
+#welcomePara {
+    background: black;
+    color: white;
+    margin: 0;
+}
+
+div img {
+    object-fit: contain;
+    height: 600px;
+    background-color: black;
+}

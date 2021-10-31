@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Task Page</title>
+	<meta charset="utf-8">
+	<meta name="author"      content="Yichen Song">
+    <link href="{{ url_for('static',filename='styles/task_page.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static',filename='scripts/task_page.js') }}"></script>
+</head>
+
+<body>
+
+<header>
+
+</header>
+
+<div id="listBar">
+    <!--List bar-->
+    <div id="selector">
+        <button class="tablinks" onclick="openTasks(event, 'ALL')" id="defaultOpen">ALL</button>
+        <button class="tablinks" onclick="openTasks(event, 'MY')">MY</button>
+        <button class="tablinks" onclick="openTasks(event, 'TO-DO')">TO-DO</button>
+    </div>
+    <h1 id="taskList">Task list</h1>
+
+    <div id="ALL" class="tabcontent">
+        <ul>
+            {% for task in all_tasks %}
+            <li class="tasklinks" onclick="openDetails(event, '{{ task['ID'] }}')">
+                <p>
+                    <span class="left"><strong>ID: </strong></span>
+                    <span class="right"><strong>Name: </strong></span>
+                    <br>
+                    <span class="left">{{ task['ID'] }} </span>
+                    <span class="right">{{ task['name'] }} </span>
+                </p>
+                <p>
+                    <span class="left"><strong>Status: </strong></span>
+                    <span class="right"><strong>Staff: </strong></span>
+                    <br>
+                    <span class="left">{{ task['status'] }} </span>
+                    <span class="right">{{ task['staff'] }} </span>
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="MY" class="tabcontent">
+        <ul>
+            {% for task in my_tasks %}
+             <li class="tasklinks" onclick="openDetails(event, '{{ task['ID'] }}')">
+                <p>
+                    <span class="left"><strong>ID: </strong></span>
+                    <span class="right"><strong>Name: </strong></span>
+                    <br>
+                    <span class="left">{{ task['ID'] }} </span>
+                    <span class="right">{{ task['name'] }} </span>
+                </p>
+                <p>
+                    <span class="left"><strong>Status: </strong></span>
+                    <span class="right"><strong>Staff: </strong></span>
+                    <br>
+                    <span class="left">{{ task['status'] }} </span>
+                    <span class="right">{{ task['staff'] }} </span>
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="TO-DO" class="tabcontent">
+        <ul>
+            {% for task in to_do_tasks %}
+             <li class="tasklinks" onclick="openDetails(event, '{{ task['ID'] }}')">
+                <p>
+                    <span class="left"><strong>ID: </strong></span>
+                    <span class="right"><strong>Name: </strong></span>
+                    <br>
+                    <span class="left">{{ task['ID'] }} </span>
+                    <span class="right">{{ task['name'] }} </span>
+                </p>
+                <p>
+                    <span class="left"><strong>Status: </strong></span>
+                    <span class="right"><strong>Staff: </strong></span>
+                    <br>
+                    <span class="left">{{ task['status'] }} </span>
+                    <span class="right">{{ task['staff'] }} </span>
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% for task in all_tasks %}
+<div id="{{ task['ID'] }}" class="details">
+    <!--Detailed information-->
+    <div>
+        <h3>ID: {{ task['ID'] }}</h3>
+        <h1>{{ task['name'] }}</h1>
+    </div>
+    <div class="imf">
+        <hr>
+        <p class="float">Staff: {{ task['staff'] }}</p>
+        <p class="float">Start Time: {{ task['start_time'] }}</p>
+        <p class="float">End Time: {{ task['end_time'] }}</p>
+        <p class="float">Status: {{ task['status'] }}</p>
+        <hr>
+        <div id="detailif">
+        <p>{{ task['detail'] }}</p>
+        </div>
+        <hr>
+        <button id="aButton" onclick="manageTask('{{ task['ID'] }}')">Manage</button>
+    </div>
+</div>
+{% endfor %}
+
+<div id="default">
+    <p>Select the task to display</p>
+</div>
+
+{% for task in all_tasks %}
+<div id="m{{ task['ID'] }}" class="manage">
+    <p>Manage Task {{ task['ID'] }}</p>
+    <table id="mTable">
+        <tr>
+            <th>ATTRIBUTE</th>
+            <th>CURRENT VALUE</th>
+            <th>OPERATION</th>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td>{{ task['ID'] }}</td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>NAME</td>
+            <td>{{ task['name'] }}</td>
+            <td>
+                <form action="{{ url_for('task_page.modify_name', id=task['ID']) }}" method="post">
+                    <input type="text" name="modify_name" required>
+                    <button type="submit">modify</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>STATUS</td>
+            <td>{{ task['status'] }}</td>
+            <td>
+                <form action="{{ url_for('task_page.modify_status', id=task['ID']) }}" method="post">
+                    <input type="text" name="modify_status" required>
+                    <button type="submit">modify</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>STAFF</td>
+            <td>{{ task['staff'] }}</td>
+            <td>
+                <form action="{{ url_for('task_page.modify_staff', id=task['ID']) }}" method="post">
+                    <input type="text" name="modify_staff" required>
+                    <button type="submit">modify</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>START TIME</td>
+            <td>{{ task['start_time'] }}</td>
+            <td>
+                <form action="{{ url_for('task_page.modify_start_time', id=task['ID']) }}" method="post">
+                    <input type="text" name="modify_start_time" required>
+                    <button type="submit">modify</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>END TIME</td>
+            <td>{{ task['end_time'] }}</td>
+            <td>
+                <form action="{{ url_for('task_page.modify_end_time', id=task['ID']) }}" method="post">
+                    <input type="text" name="modify_end_time" required>
+                    <button type="submit">modify</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>DETAILS</td>
+            <td>{{ task['detail'] }}</td>
+            <td>
+                <form action="{{ url_for('task_page.modify_details', id=task['ID']) }}" method="post">
+                    <textarea name="modify_details" rows="7" cols="30" required></textarea>
+                    <button type="submit">modify</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <!--
+            {% for i in ['project'] %}{{ i }}<br> {% endfor %}
+    -->
+    <br>
+    <button onclick="back('{{ task['ID'] }}')">Back</button>
+</div>
+{% endfor %}
+
+</body>
+</html>
+
